@@ -54,23 +54,23 @@ class Provider(str, Enum):
 # want to estimate a hypothetical (non-executed) baseline run.
 MODEL_CONFIG: Final[dict[str, dict[str, object]]] = {
     ComplexityTier.LOW.value: {
-        "provider": Provider.GEMINI.value,
-        "model_id": "gemini-2.0-flash",
-        "display_name": "Gemini 2.0 Flash",
+        "provider": Provider.GROQ.value,
+        "model_id": "openai/gpt-oss-20b",
+        "display_name": "GPT OSS 20B",
         "avg_power_watts": 12.0,
         "sec_per_token": 0.010,
     },
     ComplexityTier.MEDIUM.value: {
         "provider": Provider.GROQ.value,
-        "model_id": "llama-3.1-8b-instant",
-        "display_name": "Groq Llama 3.1 8B",
+        "model_id": "openai/gpt-oss-20b",
+        "display_name": "GPT OSS 20B",
         "avg_power_watts": 28.0,
         "sec_per_token": 0.006,  # Groq's LPU inference is very fast
     },
     ComplexityTier.HIGH.value: {
         "provider": Provider.GROQ.value,
-        "model_id": "llama-3.3-70b-versatile",
-        "display_name": "Groq Llama 3.3 70B",
+        "model_id": "openai/gpt-oss-120b",
+        "display_name": "GPT OSS 120B",
         "avg_power_watts": 70.0,
         "sec_per_token": 0.009,
     },
