@@ -1,5 +1,5 @@
- Eco-Compiler
-
+## AI²<br>
+Sustainable AI for AI<br>
  Environmental Pre-Flight System
 
 Team Name: Reverie
@@ -11,71 +11,85 @@ Team Members
 * Akhil E H
 * Dhruvan S S
 
----
+## An Intelligent Resource-Aware AI Orchestration Platform for Sustainable Artificial Intelligence
 
- Problem
+### 1. Project Overview
 
-Organizations usually measure environmental impact **after** decisions are executed. By then, resources, energy, and materials have already been consumed.
+Artificial Intelligence requires massive computational power, but not every task demands the same resources. **GreenAI Optimizer** dynamically analyzes task complexity and routes requests to the most efficient suitable model.
 
----
-
- Solution
-
-Eco-Compiler is an AI-powered decision intelligence platform that detects environmental inefficiencies in plans before execution and generates optimized, lower-impact alternatives.
+> "Use only the amount of AI computation that is actually required to achieve the desired quality."
 
 ---
 
- Example
+### 2. Problem Statement
 
- Original Plan
-
-* Purchase 500 chairs
-* Use 5,000 disposable cups
-* Schedule 8 deliveries
-
- Eco-Optimized Plan
-
-* Purchase 200 chairs
-* Use reusable cups
-* Schedule 5 deliveries
+* **Unnecessary Resource Consumption:** Defaulting to large models for simple queries wastes energy and compute.
+* **Environmental Impact:** Higher energy usage drives up carbon footprints and hardware wear.
+* **Cost Inefficiency:** Operating massive models for trivial tasks increases operational overhead.
 
 ---
 
- How It Works
+### 3. Proposed Solution
+
+An intelligent middleware layer that sits between users and AI models to:
+
+* Classify task complexity (**Low**, **Medium**, **High**).
+* Route requests to the smallest capable model.
+* Monitor resource utilization and estimate energy savings.
+
+---
+
+### 4. Core Concept & Workflow
 
 ```text
-Plan Input
-    ↓
-AI Extraction
-    ↓
-Environmental Analysis
-    ↓
-Optimization Engine
-    ↓
-Alternative Plan
-    ↓
-Impact Comparison
+User Request → Task Complexity Analysis → Model Selection → Execution → Resource Monitoring → Response + Dashboard
+
 ```
 
 ---
 
- Key Feature: Environmental Diff
+### 5. Intelligent Model Routing & Task Classification
 
-Eco-Compiler compares the original and optimized plans side-by-side, helping users clearly visualize environmental improvements before implementation.
-
----
-
- Tech Stack
-
-* Frontend: React
-* Backend: FastAPI / Node.js
-* AI: OpenAI / Gemini
-* Database: PostgreSQL / Supabase
+* **Low Complexity:** Basic explanations $\rightarrow$ **Small Models** (Low energy).
+* **Medium Complexity:** Multi-step reasoning $\rightarrow$ **Medium Models** (Balanced).
+* **High Complexity:** Long-context analysis/coding $\rightarrow$ **Large Models** (Maximum capability).
 
 ---
 
- Vision
+### 6. Resource Monitoring & Energy Estimation
 
-Decision → Environmental Check → Optimization → Execution**
+* **Metrics:** CPU/GPU usage, VRAM, latency, and token count.
+* **Energy Formula:** $\text{Energy} = \text{Power} \times \text{Time}$
+* **Carbon Footprint:** $\text{CO}_2\text{e} = \text{Energy Consumed} \times \text{Carbon Intensity}$
 
-Prevent environmental impact before it happens instead of measuring it afterward.
+---
+
+### 7. Sustainability Dashboard & Green Score
+
+Provides real-time feedback and a custom Green Score (out of 100) per request.
+
+| Metric | Conventional Approach | GreenAI Optimizer |
+| --- | --- | --- |
+| **Compute** | 100% | ~58% |
+| **Energy** | 100% | ~64% |
+| **Latency** | 100% | ~70% |
+| **Quality** | 95% | ~93% |
+
+---
+
+### 8. Technology Stack
+
+* **Frontend:** React.js / Vite (`greenai-optimizer-jungle-react`)
+* **Backend:** Python, FastAPI (`ai-squared-backend`)
+* **AI / Inference:** Hugging Face, Ollama, open-source models
+* **Data & Visualization:** PostgreSQL / MongoDB, Recharts
+
+---
+
+### 9. Implementation Plan
+
+1. Build core chat interface and connect multi-model backend.
+2. Implement task complexity classifier.
+3. Deploy intelligent model router.
+4. Integrate resource monitoring and energy estimation.
+5. Launch sustainability dashboard and benchmarking suite.
