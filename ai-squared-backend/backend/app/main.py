@@ -14,6 +14,7 @@ Then open http://127.0.0.1:8000/docs for interactive Swagger UI.
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import logging
 
 from dotenv import load_dotenv
@@ -26,10 +27,8 @@ from fastapi.responses import JSONResponse
 from app.models.schemas import HealthResponse
 from app.routers import chat
 
-
-
 # ---------------------------------------------------------------------------
-# Logging
+# Logging Configuration
 # ---------------------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
@@ -39,14 +38,30 @@ logger = logging.getLogger("ai_squared")
 
 APP_VERSION = "1.0.0"
 
+
+# ---------------------------------------------------------------------------
+# Lifespan Context Manager (Modern FastAPI Startup / Shutdown)
+# ---------------------------------------------------------------------------
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Log a friendly banner on boot when server starts."""
+    logger.info("=" * 60)
+    logger.info("AI² (AI Squared) backend starting -- v%s", APP_VERSION)
+    logger.info("Docs available at http://127.0.0.1:8000/docs")
+    logger.info("=" * 60)
+    yield
+    logger.info("AI² (AI Squared) backend shutting down.")
+
+
 app = FastAPI(
-    title="AI² (AI Squared)",
+    title="AI² API(AI Squared)",
     description="Resource-Aware AI Orchestration for Sustainable Computing.",
     version=APP_VERSION,
+    lifespan=lifespan,
 )
 
 # ---------------------------------------------------------------------------
-# CORS -- wide open for hackathon demo purposes (tighten for production).
+# CORS Configuration -- Permits cross-origin calls from React Vite dev server
 # ---------------------------------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
@@ -57,44 +72,38 @@ app.add_middleware(
 )
 
 # ---------------------------------------------------------------------------
-# Routers
+# Routers -- Mount under both root and /api for route compatibility
 # ---------------------------------------------------------------------------
 app.include_router(chat.router)
+app.include_router(chat.router, prefix="/api")
 
 
 # ---------------------------------------------------------------------------
-# Global exception handler -- guarantees a clean JSON error body instead of
-# an unhandled-exception traceback leaking to the client.
+# Global Exception Handler
 # ---------------------------------------------------------------------------
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    """Catch-all handler so unexpected errors never crash the process or leak tracebacks."""
-    logger.exception("Unhandled exception on %s %s", request.method, request.url.path)
+    """Catch-all handler so unexpected errors return formatted JSON."""
+    logger.exception("Unhandled exception on %s %s: %s", request.method, request.url.path, exc)
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An unexpected server error occurred.", "error": str(exc)},
+        content={
+            "detail": "An unexpected server error occurred.",
+            "error": str(exc),
+        },
     )
 
 
 # ---------------------------------------------------------------------------
-# Health / root endpoints
+# Health / Root Endpoints
 # ---------------------------------------------------------------------------
 @app.get("/", response_model=HealthResponse, tags=["health"])
 async def root() -> HealthResponse:
-    """Basic liveness check -- also useful as the hackathon demo's first curl."""
+    """Basic liveness check."""
     return HealthResponse(status="ok", service="AI² (AI Squared)", version=APP_VERSION)
 
 
 @app.get("/health", response_model=HealthResponse, tags=["health"])
 async def health() -> HealthResponse:
-    """Alias for `/` -- some deployment platforms probe `/health` specifically."""
+    """Alias for `/`."""
     return HealthResponse(status="ok", service="AI² (AI Squared)", version=APP_VERSION)
-
-
-@app.on_event("startup")
-async def on_startup() -> None:
-    """Log a friendly banner on boot -- useful when judges watch the terminal."""
-    logger.info("=" * 60)
-    logger.info("AI² (AI Squared) backend starting -- v%s", APP_VERSION)
-    logger.info("Docs available at /docs")
-    logger.info("=" * 60)

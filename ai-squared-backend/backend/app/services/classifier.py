@@ -96,10 +96,10 @@ def classify_prompt(prompt: str) -> ClassificationResult:
     reasons: list[str] = []
 
     # --- Word count signal -------------------------------------------------
-    if word_count <= LOW_WORD_COUNT_MAX:
+    if word_count <= 5:
         scores[ComplexityTier.LOW.value] += 2
         reasons.append(f"short prompt ({word_count} words)")
-    elif word_count <= MEDIUM_WORD_COUNT_MAX:
+    elif word_count <= 8:
         scores[ComplexityTier.MEDIUM.value] += 2
         reasons.append(f"medium-length prompt ({word_count} words)")
     else:
